@@ -1,0 +1,103 @@
+.box {
+    margin: auto;
+    margin-top: 5%;
+    min-height: 380px;
+    width: 350px;
+    border-radius: 10px;
+    box-shadow: -3px -3px 7px #3b3b3b, 3px 3px 5px #3b3b3b;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    padding: 30px 30px;
+}
+
+.upper-icons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+
+.upper-icons svg:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.profile-circle {
+    margin-top: 2px;
+    height: 120px;
+    width: 120px;
+    border-radius: 10px;
+    box-shadow: -3px -3px 7px #3b3b3b, 3px 3px 5px #3b3b3b;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img{
+        object-fit: cover;
+    }
+}
+
+img {
+    width: 100px;
+    border-radius: 50%;
+}
+
+.profile-info {
+    height: 50px;
+    width: 100%;
+    margin: 10px 0px;
+    line-height: 25px;
+}
+
+.profile-info {
+    color: #ffffff;
+    font-size: 14px;
+}
+
+@import 'https://fonts.googleapis.com/css?family=Ubuntu+Condensed';
+
+a {
+    text-decoration: none;
+}
+
+.social {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding: 16px;
+    margin-bottom: 16px;
+    margin-right: 16px;
+    background-color: transparent;
+    border: 1px solid gray;
+    &:hover{
+        box-shadow: 8px 8px 0 0px rgba(0, 0, 0, 0.25);
+    }
+}
+
+nav {
+    padding-top: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+nav ul li {
+    display: inline;
+}
+
+
+
+nav ul li a.menutext {
+    border-left: 50px solid #c4c4c4;
+    color: #ffffff;
+}
+
+
