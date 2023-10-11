@@ -53,7 +53,7 @@ export class ContactService {
       this.contactData.contactList.push({ userId: id, id: newId, name: data.name, number: data.number, email: data.email, image: image });
       
       //Save data in local storage
-      this.localStorageService.setLocalStorageData();
+      this.localStorageService.setLocalStorageData(this.contactData);
       this.toastr.success('Contact added Successfull');
     }
   }
@@ -73,7 +73,7 @@ export class ContactService {
     });
 
     //Save data in local storage
-    this.localStorageService.setLocalStorageData();
+    this.localStorageService.setLocalStorageData(this.contactData);
     this.toastr.success('Contact updated Successfull');
   }
 
@@ -86,11 +86,7 @@ export class ContactService {
     this.contactData.contactList = this.contactData.contactList.filter((item: ContactList) => item.id !== id)
     
     //Save data in local storage
-    this.localStorageService.setLocalStorageData();
+    this.localStorageService.setLocalStorageData(this.contactData);
     this.toastr.success('Contact removed Successfull');
-  }
-
-  pageSize(perPage:number,contactData:ContactData){
-    
   }
 }

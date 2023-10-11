@@ -1,26 +1,47 @@
 <app-contact-header></app-contact-header>
 <div class="box">
-    <!-- <div class="upper-icons">
+  <!-- <div class="upper-icons">
       <svg color="white" xmlns="http://www.w3.org/2000/svg" height="25" viewBox="0 0 24 24" (click)="back()">
         <path fill="currentColor" d="m10 18l-6-6l6-6l1.4 1.45L7.85 11H20v2H7.85l3.55 3.55L10 18Z" />
       </svg>
     </div> -->
-  
-    <div class="profile-circle">
-      <img src="{{noImage}}" sizes="c" alt="">
-    </div>
-  
-    <div class="profile-info">
-      <h4>{{userDetail.name}}</h4>
-      <p> {{userDetail.email}}</p>
-    </div>
 
-    <nav>
-        <ul>
-          <li><a class="social menutext" href="#">
-             Edit Profile</a></li>
-          <li><a class="social menutext" href="#">Change password</a></li>
-        </ul>
-      </nav>
-
+  <div class="profile-circle">
+    <img src="{{noImage}}" sizes="c" alt="">
   </div>
+
+  <div class="profile-info">
+    <h4>{{userDetail.name}}</h4>
+    <p> {{userDetail.email}}</p>
+  </div>
+
+  <nav id="nav" *ngIf="!showEdit">
+    <ul>
+      <li><a class="social menutext" (click)="edit()">Edit Profile</a></li>
+      <li><a class="social menutext">Change password</a></li>
+    </ul>
+  </nav>
+
+  <div class="form" *ngIf="showEdit">
+    <form [formGroup]="userDetailForm" (ngSubmit)="save()">
+      <div class="form-floating from-input">
+        <input type="text" class="form-control" id="floatingNameInput" formControlName="fName" placeholder="Enter your name">
+        <label for="floatingNameInput">Name</label>
+        <div *ngIf="userDetailForm.controls['fName'].errors && (userDetailForm.controls['fName'].touched)"
+          class="validation-error">
+          Enter Name
+        </div>
+      </div>
+      <div class="form-floating from-input">
+        <input type="email" class="form-control" id="floatingEmailInput" formControlName="email" placeholder="Enter your email id">
+        <label for="floatingEmailInput">Email address</label>
+        <div *ngIf="userDetailForm.controls['email'].errors && (userDetailForm.controls['email'].touched)"
+          class="validation-error">
+          Enter valid Email
+        </div>
+      </div>
+
+      <button class="w-100 btn btn-lg btn-secondary" [disabled]="!userDetailForm.valid"  type="submit">Save</button>
+    </form>
+  </div>
+</div>

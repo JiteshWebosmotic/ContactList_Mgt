@@ -23,7 +23,7 @@ export class UserService {
     } else {
       let newId = this.localStorageService.create_UUID();
       this.contactData.user.push({ id: newId, name: data.fName, email: data.email, password: data.password });
-      this.localStorageService.setLocalStorageData();
+      this.localStorageService.setLocalStorageData(this.contactData);
       return true;
     }
   }
@@ -50,5 +50,17 @@ export class UserService {
     let email = this.localStorageService.decryptCookieData(this.coockieservice.get("ConatctApp"));
     this.contactData = this.localStorageService.loadLocalStorageData();
     return this.contactData.user.find((m: User) => m.email === email);
+  }
+
+  updateUserDetail(data: any){
+    this.contactData = this.localStorageService.loadLocalStorageData();
+    this.contactData.user.map((m)=>{
+      if(m.id === data.id){
+        m.name = data.name;
+        m.email = data.email;
+      }
+    })
+    this.localStorageService.setLocalStorageData(this.contactData);
+    this.coockieservice.set("ConatctApp",this.localStorageService.encryptCookieData(data.email))
   }
 }

@@ -24,8 +24,8 @@ export class LocalStorageService {
     return this.contactData;
   }
 
-  setLocalStorageData() {
-    localStorage.setItem("contactData", JSON.stringify(this.contactData));
+  setLocalStorageData(contactData:any) {
+    localStorage.setItem("contactData", JSON.stringify(contactData));
   }
 
   create_UUID() {

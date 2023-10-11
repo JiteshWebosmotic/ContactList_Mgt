@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
@@ -10,6 +11,11 @@ import { UserService } from 'src/app/services/user.service';
 export class ProfileComponent {
   noImage: string ='https://media.tenor.com/XdFv1bbfOdEAAAAd/user-icons.gif';
   userDetail: any;
+  showEdit:boolean = false;
+  userDetailForm = new FormGroup({
+    fName: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, Validators.email])
+  })
   constructor(
     private router: Router,
     private userService: UserService
@@ -17,10 +23,17 @@ export class ProfileComponent {
 
   ngOnInit() {
     this.userDetail = this.userService.getUserDetail();
+    this.userDetailForm.controls['fName'].setValue(this.userDetail.name);
+    this.userDetailForm.controls['email'].setValue(this.userDetail.email);
   }
 
-  back(){
-    this.router.navigateByUrl('contacts');
+  edit(){
+    this.showEdit = true;
   }
 
+  save(){
+    this.userService.updateUserDetail(this.userDetailForm.value);
+    this.userService.getUserDetail();
+    this.showEdit = false;
+  }
 }
