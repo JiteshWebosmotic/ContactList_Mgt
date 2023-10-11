@@ -32,7 +32,7 @@ export class ProfileComponent {
   }
 
   save(){
-    this.userService.updateUserDetail(this.userDetailForm.value);
+    this.userService.updateUserDetail(this.userDetail.id, this.userDetailForm.value);
     this.userService.getUserDetail();
     this.showEdit = false;
   }

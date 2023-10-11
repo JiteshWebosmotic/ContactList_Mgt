@@ -52,11 +52,11 @@ export class UserService {
     return this.contactData.user.find((m: User) => m.email === email);
   }
 
-  updateUserDetail(data: any){
+  updateUserDetail(id: string,data: any){
     this.contactData = this.localStorageService.loadLocalStorageData();
     this.contactData.user.map((m)=>{
-      if(m.id === data.id){
-        m.name = data.name;
+      if(m.id === id){
+        m.name = data.fName;
         m.email = data.email;
       }
     })
