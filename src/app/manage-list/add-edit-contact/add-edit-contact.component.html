@@ -3,7 +3,7 @@
     <div class="form-floating">
       <input type="text" class="form-control" id="floatingNameInput" formControlName="name"
         placeholder="Enter your name">
-      <label for="floatingNameInput">Name</label>
+      <label for="floatingNameInput">Name*</label>
       <div *ngIf="contactForm.controls['name'].errors && (contactForm.controls['name'].touched)"
         class="validation-error">
         Enter Name
@@ -12,7 +12,7 @@
     <div class="form-floating">
       <input type="email" class="form-control" id="floatingEmailInput" formControlName="email"
         placeholder="Enter your email id">
-      <label for="floatingEmailInput">Email address</label>
+      <label for="floatingEmailInput">Email address*</label>
       <div *ngIf="contactForm.controls['email'].errors && (contactForm.controls['email'].touched)"
         class="validation-error">
         Enter valid Email
@@ -21,7 +21,7 @@
     <div class="form-floating">
       <input type="number" class="form-control" id="floatingPhoneInput" formControlName="number"
         placeholder="Enter your phone number">
-      <label for="floatingPhoneInput">Phone number</label>
+      <label for="floatingPhoneInput">Phone number*</label>
       <div *ngIf="contactForm.controls['number'].errors && (contactForm.controls['number'].touched)"
         class="validation-error">
         Enter valid Number

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { User } from 'src/app/services/model-service.service';
+import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
 
@@ -10,12 +10,13 @@ import Swal from 'sweetalert2';
 })
 export class ContactHeaderComponent {
   userName: string= '';
+  subscription: Subscription | undefined;
   constructor(
     private userService: UserService
   ) { }
 
   ngOnInit() {
-    this.userService.userName.subscribe((data)=>{
+    this.subscription = this.userService.userName.subscribe((data)=>{
       this.userName = data;
     });
   }
@@ -33,4 +34,9 @@ export class ContactHeaderComponent {
       }
     })
   }
+
+  ngOnDestroy() {
+    this.subscription?.unsubscribe();
+  }
+
 }

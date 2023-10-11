@@ -6,7 +6,7 @@
       <div class="form-floating from-input">
         <input type="text" class="form-control" id="floatingNameInput" formControlName="fName"
           placeholder="Enter your name">
-        <label for="floatingNameInput">Name</label>
+        <label for="floatingNameInput">Name*</label>
         <div *ngIf="signUpForm.controls['fName'].errors && (signUpForm.controls['fName'].touched)"
           class="validation-error">
           Enter Name
@@ -15,7 +15,7 @@
       <div class="form-floating from-input">
         <input type="email" class="form-control" id="floatingEmailInput" formControlName="email"
           placeholder="Enter your email id">
-        <label for="floatingEmailInput">Email address</label>
+        <label for="floatingEmailInput">Email address*</label>
         <div *ngIf="signUpForm.controls['email'].errors && (signUpForm.controls['email'].touched)"
           class="validation-error">
           Enter valid Email
@@ -24,7 +24,7 @@
       <div class="form-floating from-input">
         <input type="password" class="form-control" id="floatingPassword" formControlName="password"
           placeholder="Enter your Password">
-        <label for="floatingPassword">Password</label>
+        <label for="floatingPassword">Password*</label>
         <div
           *ngIf="signUpForm.controls['password'].errors && (signUpForm.controls['password'].touched || signUpForm.controls['password'].dirty)"
           class="validation-error">
@@ -34,7 +34,7 @@
       <div class="form-floating from-input">
         <input type="password" class="form-control" id="floatingconfirmPassword" formControlName="confirmPassword"
           placeholder="Enter your confirm Password">
-        <label for="floatingconfirmPassword">Confirm Password</label>
+        <label for="floatingconfirmPassword">Confirm Password*</label>
         <div
           *ngIf="signUpForm.controls['confirmPassword'].errors && (signUpForm.controls['confirmPassword'].touched || signUpForm.controls['confirmPassword'].dirty)"
           class="validation-error">

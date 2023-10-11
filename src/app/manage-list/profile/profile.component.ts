@@ -34,11 +34,11 @@ export class ProfileComponent {
   save(){
     let result = this.userService.updateUserDetail(this.userDetail.id, this.userDetailForm.value);
     if(result){
-      this.toastr.success('Registration Successfull');
+      this.toastr.success('Profile updated Successfull');
       this.userDetail = this.userService.getUserDetail();
       this.showEdit = false;
     } else{
-      this.toastr.error('Registration Failed', 'Email id is already in Used.');
+      this.toastr.error('Failed to update profile details', 'Email id is already in Used.');
     }
     
   }

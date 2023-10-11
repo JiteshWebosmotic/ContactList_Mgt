@@ -6,7 +6,7 @@
       <div class="form-floating from-input">
         <input type="email" class="form-control" id="floatingInput" formControlName="email"
           placeholder="Enter your email id">
-        <label for="floatingInput">Email address</label>
+        <label for="floatingInput">Email address*</label>
         <div *ngIf="signInForm.controls['email'].errors && (signInForm.controls['email'].touched)"
           class="validation-error">
           Enter valid Email
@@ -15,7 +15,7 @@
       <div class="form-floating from-input">
         <input type="password" class="form-control" id="floatingPassword" formControlName="password"
           placeholder="Enter your Password">
-        <label for="floatingPassword">Password</label>
+        <label for="floatingPassword">Password*</label>
         <div
           *ngIf="signInForm.controls['password'].errors && (signInForm.controls['password'].touched || signInForm.controls['password'].dirty)"
           class="validation-error">

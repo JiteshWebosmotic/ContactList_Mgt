@@ -26,7 +26,7 @@
     <form [formGroup]="userDetailForm" (ngSubmit)="save()">
       <div class="form-floating from-input">
         <input type="text" class="form-control" id="floatingNameInput" formControlName="fName" placeholder="Enter your name">
-        <label for="floatingNameInput">Name</label>
+        <label for="floatingNameInput">Name*</label>
         <div *ngIf="userDetailForm.controls['fName'].errors && (userDetailForm.controls['fName'].touched)"
           class="validation-error">
           Enter Name
@@ -34,7 +34,7 @@
       </div>
       <div class="form-floating from-input">
         <input type="email" class="form-control" id="floatingEmailInput" formControlName="email" placeholder="Enter your email id">
-        <label for="floatingEmailInput">Email address</label>
+        <label for="floatingEmailInput">Email address*</label>
         <div *ngIf="userDetailForm.controls['email'].errors && (userDetailForm.controls['email'].touched)"
           class="validation-error">
           Enter valid Email
