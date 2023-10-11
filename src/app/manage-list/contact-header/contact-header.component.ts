@@ -9,13 +9,15 @@ import Swal from 'sweetalert2';
   styleUrls: ['./contact-header.component.scss']
 })
 export class ContactHeaderComponent {
-  userDetail: User | undefined;
+  userName: string= '';
   constructor(
     private userService: UserService
   ) { }
 
   ngOnInit() {
-    this.userDetail = this.userService.getUserDetail();
+    this.userService.userName.subscribe((data)=>{
+      this.userName = data;
+    });
   }
 
   logOut() {

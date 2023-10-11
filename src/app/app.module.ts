@@ -20,7 +20,11 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     ManageListModule,
     LoginModule,
     BrowserAnimationsModule, // required animations module
-    ToastrModule.forRoot(), // ToastrModule added
+    ToastrModule.forRoot({
+      timeOut: 10000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+    }), // ToastrModule added
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

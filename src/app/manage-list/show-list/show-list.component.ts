@@ -107,7 +107,7 @@ export class ShowListComponent {
         mainPage.style.opacity = '1';
       }
     }
-    this.addEditComponent?.contactForm.reset();
+    this.addEditComponent?.clearForm();
   }
 
   //Search

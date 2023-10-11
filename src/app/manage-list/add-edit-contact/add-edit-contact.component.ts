@@ -28,4 +28,9 @@ export class AddEditContactComponent {
       reader.readAsDataURL(file);
     }
   }
+
+  clearForm(){
+    this.contactForm.reset();
+    this.imageSrc = '';
+  }
 }

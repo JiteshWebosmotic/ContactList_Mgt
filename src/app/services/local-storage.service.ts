@@ -24,7 +24,7 @@ export class LocalStorageService {
     return this.contactData;
   }
 
-  setLocalStorageData(contactData:any) {
+  setLocalStorageData(contactData: any) {
     localStorage.setItem("contactData", JSON.stringify(contactData));
   }
 
@@ -38,8 +38,8 @@ export class LocalStorageService {
     return uuid;
   }
 
-  encryptCookieData(massage: string) {
-    return CryptoJS.AES.encrypt(massage, 'secret key 123').toString();
+  encryptCookieData(id: string) {
+    return CryptoJS.AES.encrypt(id, 'secret key 123').toString();
   }
 
   decryptCookieData(ciphertext: string) {

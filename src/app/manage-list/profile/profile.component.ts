@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -17,8 +17,8 @@ export class ProfileComponent {
     email: new FormControl('', [Validators.required, Validators.email])
   })
   constructor(
-    private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private toastr: ToastrService,
   ){}
 
   ngOnInit() {
@@ -32,8 +32,14 @@ export class ProfileComponent {
   }
 
   save(){
-    this.userService.updateUserDetail(this.userDetail.id, this.userDetailForm.value);
-    this.userService.getUserDetail();
-    this.showEdit = false;
+    let result = this.userService.updateUserDetail(this.userDetail.id, this.userDetailForm.value);
+    if(result){
+      this.toastr.success('Registration Successfull');
+      this.userDetail = this.userService.getUserDetail();
+      this.showEdit = false;
+    } else{
+      this.toastr.error('Registration Failed', 'Email id is already in Used.');
+    }
+    
   }
 }

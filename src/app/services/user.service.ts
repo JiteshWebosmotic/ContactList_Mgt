@@ -3,12 +3,14 @@ import { LocalStorageService } from './local-storage.service';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { ContactData, User } from './model-service.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   contactData: ContactData | undefined;
+  userName = new BehaviorSubject<string>('');
   constructor(
     private localStorageService: LocalStorageService,
     private router: Router,
@@ -32,7 +34,7 @@ export class UserService {
     this.contactData = this.localStorageService.loadLocalStorageData();
     let validEmail = this.contactData.user.find(u => {
       if ((u.email === data.email) && (u.password === data.password)) {
-        this.coockieservice.set("ConatctApp",this.localStorageService.encryptCookieData(u.email))
+        this.coockieservice.set("ConatctApp", this.localStorageService.encryptCookieData(u.id))
         return true;
       } else {
         return false;
@@ -47,20 +49,27 @@ export class UserService {
   }
 
   getUserDetail(): User | undefined {
-    let email = this.localStorageService.decryptCookieData(this.coockieservice.get("ConatctApp"));
+    let id = this.localStorageService.decryptCookieData(this.coockieservice.get("ConatctApp"));
     this.contactData = this.localStorageService.loadLocalStorageData();
-    return this.contactData.user.find((m: User) => m.email === email);
+    let userDetails = this.contactData.user.find((m: User) => m.id === id);
+    this.userName.next(userDetails ? userDetails.name : '');
+    return userDetails;
   }
 
-  updateUserDetail(id: string,data: any){
+  updateUserDetail(id: string, data: any) {
     this.contactData = this.localStorageService.loadLocalStorageData();
-    this.contactData.user.map((m)=>{
-      if(m.id === id){
-        m.name = data.fName;
-        m.email = data.email;
-      }
-    })
-    this.localStorageService.setLocalStorageData(this.contactData);
-    this.coockieservice.set("ConatctApp",this.localStorageService.encryptCookieData(data.email))
+    let available = this.contactData.user.find(u => (u.email === data.email && u.id != id))
+    if (available) {
+      return false;
+    } else {
+      this.contactData.user.map((m) => {
+        if (m.id === id) {
+          m.name = data.fName;
+          m.email = data.email;
+        }
+      })
+      this.localStorageService.setLocalStorageData(this.contactData);
+      return true;
+    }
   }
 }
