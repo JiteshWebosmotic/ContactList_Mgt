@@ -6,11 +6,11 @@ import { ContactData } from 'src/app/services/model-service.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-show-list',
-  templateUrl: './show-list.component.html',
-  styleUrls: ['./show-list.component.scss']
+  selector: 'app-contact-list',
+  templateUrl: './contact-list.component.html',
+  styleUrls: ['./contact-list.component.scss']
 })
-export class ShowListComponent {
+export class ContactListComponent {
   contactData:ContactData | undefined;
   contactList: any = [];
   userDetail: any;

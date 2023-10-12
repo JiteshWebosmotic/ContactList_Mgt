@@ -9,15 +9,21 @@ import Swal from 'sweetalert2';
   styleUrls: ['./contact-header.component.scss']
 })
 export class ContactHeaderComponent {
-  userName: string= '';
+  userName: string = '';
+  showUserMenu: boolean = false;
   subscription: Subscription | undefined;
   constructor(
     private userService: UserService
   ) { }
 
   ngOnInit() {
-    this.subscription = this.userService.userName.subscribe((data)=>{
-      this.userName = data;
+    this.subscription = this.userService.userData.subscribe((data)=>{
+      this.userName = data?.name;
+      if(data?.role === "ADMIN"){
+        this.showUserMenu = true;
+      } else {
+        this.showUserMenu = false;
+      }
     });
   }
 

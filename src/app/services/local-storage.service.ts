@@ -10,10 +10,7 @@ export class LocalStorageService {
   private contactData: ContactData;
 
   constructor() {
-    this.contactData = {
-      user: [{ id: '1', name: 'demo', email: 'demo@1.com', password: 'demo1' }],
-      contactList: [{ userId: '1', id: '1', name: 'demo', email: 'demo@11.com', number: 243, image: '' }]
-    }
+    this.contactData = { user: [], contactList: []}
   }
 
   loadLocalStorageData() {

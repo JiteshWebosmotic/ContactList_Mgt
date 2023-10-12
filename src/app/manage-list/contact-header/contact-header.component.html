@@ -1,6 +1,7 @@
 <div class="header main-header">
     <h2>Contact App</h2>
     <div class="profile">
+        <a routerLink="/user" routerLinkActive="active-link" *ngIf="showUserMenu">User</a>
         <a routerLink="/contacts" routerLinkActive="active-link">Contact List</a>
         <a routerLink="/profile" routerLinkActive="active-link">Profile</a>
         <button type="button" class="btn btn-light" (click)="logOut()">{{userName}} |
