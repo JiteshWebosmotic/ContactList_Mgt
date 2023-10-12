@@ -119,3 +119,44 @@
     -webkit-transition: "color 9999s ease-out, background-color 9999s ease-out";
     -webkit-transition-delay: 9999s;
 }
+
+
+
+.list-footer{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .dropdown-manu{
+      color: white;
+      .dropdown-btn{
+          background-color: transparent;
+          border: 2px solid white;
+          color: white;
+      }
+  }
+  .page-link{
+      color: #fff;
+      background-color: transparent;
+      &:hover{
+          background-color: white;
+          color: black;
+      }
+  }
+  .page-item{
+      a {
+          cursor: pointer;
+      }
+      
+  }
+}
+.active{
+  box-shadow: 2px 2px 5px black !important;
+}
+.disabled{
+  background-color: rgb(59, 59, 59) !important;
+  
+  a{
+      color: #000000 !important;
+      border:none !important;
+  }
+}

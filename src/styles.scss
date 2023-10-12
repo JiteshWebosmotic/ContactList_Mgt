@@ -287,3 +287,13 @@ button.toast-close-button {
       color: white;
   }
 }
+
+.data-not-found{
+  display: grid;
+  justify-content: center;
+  justify-items: center;
+  margin-top: 5%;
+  img{
+      width: 100px;
+  }
+}

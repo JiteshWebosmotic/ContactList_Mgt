@@ -30,11 +30,11 @@ export class ContactListComponent {
 
   ngOnInit() {
     this.userDetail = this.userService.getUserDetail();
-    this.loadData(1);
+    this.loadData();
   }
 
-  loadData(start:number) {
-    this.contactList = this.contactService.getContectList(this.userDetail.id,this.pageSize, start,this.searchTerm);
+  loadData(start?:number) {
+    this.contactList = this.contactService.getContectList(this.userDetail.id,this.pageSize, start ? start : 1,this.searchTerm);
     this.pagginationNumber = this.contactService.paggerSize;
     this.loadPaggination();
   }
@@ -46,7 +46,7 @@ export class ContactListComponent {
       } else {
         this.contactService.addContact(this.addEditComponent?.contactForm.value, this.addEditComponent?.imageSrc, this.userDetail.id);
       }
-      this.loadData(1);
+      this.loadData();
       this.closeModal();
       this.addEditComponent?.contactForm.reset();
     } else {
@@ -65,7 +65,7 @@ export class ContactListComponent {
     }).then((result) => {
       if (result.value) {
         this.contactService.removeContact(conatct.id);
-        this.loadData(1);
+        this.loadData();
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal.fire(
           'Cancelled',
@@ -112,19 +112,19 @@ export class ContactListComponent {
 
   //Search
   search(){
-    this.loadData(1);
+    this.loadData();
     this.currentPage = 1;
   }
 
   searchClear(){
     this.searchTerm = "";
-    this.loadData(1);
+    this.loadData();
   }
   
   //Paggination
   onSelectPageSize($event: any){
     this.pageSize = $event.target.value;
-    this.loadData(1);
+    this.loadData();
     this.currentPage = 1;
   }
 
