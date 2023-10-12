@@ -4,7 +4,7 @@ export interface User {
   name: string,
   email: string,
   password: string,
-  role?: string
+  role: string
 }
 export interface ContactList {
   userId: string,

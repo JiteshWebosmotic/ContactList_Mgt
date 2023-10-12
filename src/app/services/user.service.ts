@@ -49,7 +49,7 @@ export class UserService {
     this.router.navigateByUrl('signIn');
   }
 
-  getUserDetail(): User | undefined {
+  getUserDetail(): User {
     let id = this.localStorageService.decryptCookieData(this.coockieservice.get("ConatctApp"));
     this.contactData = this.localStorageService.loadLocalStorageData();
     let userDetails = this.contactData.user.find((m: User) => m.id === id);

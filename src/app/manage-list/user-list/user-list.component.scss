@@ -66,6 +66,7 @@
   }
   /* styling of close button */
   .close-btn {
+    margin-top: 10px;
     border: none;
     right: var(--inline-padding-of-input);
     box-sizing: border-box;
@@ -77,7 +78,7 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: var(--active-color);
+    background-color: transparent;
     opacity: 0;
     visibility: hidden;
   }

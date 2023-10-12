@@ -1,40 +1,29 @@
-import { CanActivateFn, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivateFn, Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
-import { UserService } from './services/user.service';
 
 
-export const authGuard: CanActivateFn = (route) => {
+export const authGuard: CanActivateFn = (route:ActivatedRouteSnapshot) => {
   let auth = inject(AuthService);
   let router = inject(Router);
-  if (auth.isAuthenticatedUser()) {
-    return true;
-  } else {
+
+  let roles = route.data['role'];
+
+  if (!auth.isAuthenticatedUser()) {
     router.navigateByUrl('signIn');
     return false;
   }
-};
 
-export const roleguardGuard: CanActivateFn = (route, state) => {
-  let user = inject(UserService);
-  let router = inject(Router);
-  let http = inject(HttpClient);
-  
-  let routeRolesUrl = 'assets/route-roles.json';
-  let userDetail = user.getUserDetail();
-  let routingURL = route.routeConfig?.path;
-  let routingConfigData:any;
-
-  return http.get(routeRolesUrl).pipe(map((data)=>{
-    routingConfigData = data;
-    let roleType = routingConfigData?.find((d:any)=> d.Route == routingURL);
-    if (roleType.Role.includes(userDetail?.role)){
+  if(roles){
+    if(auth.hasRole(roles)){
       return true;
-    } else {
+    }
+    else{
       router.navigateByUrl('contacts');
       return false;
-    }
-  }));
+    } 
+  }
+
+  return true;
 };
+
