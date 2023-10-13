@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ContactHeaderComponent } from './contact-header/contact-header.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UserListComponent } from './user-list/user-list.component';
+import { PhoneNumberPipe } from '../phone-number.pipe';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { UserListComponent } from './user-list/user-list.component';
     ContactHeaderComponent,
     ProfileComponent,
     UserListComponent,
-    ContactListComponent
+    ContactListComponent,
+    PhoneNumberPipe
   ],
   imports: [
     CommonModule,
