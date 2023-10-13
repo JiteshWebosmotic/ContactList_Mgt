@@ -1,8 +1,11 @@
 <div class="header main-header">
-    <h2>Contact App</h2>
+    <div class="logo">
+        <img src="https://icon-library.com/images/android-contacts-icon-png/android-contacts-icon-png-26.jpg" height="50px" alt="" srcset="">
+        <h2>Contact App</h2>
+    </div>
     <div class="profile">
-        <a routerLink="/user" routerLinkActive="active-link" *ngIf="showUserMenu">User</a>
-        <a routerLink="/contacts" routerLinkActive="active-link">Contact List</a>
+        <a routerLink="/user" routerLinkActive="active-link" *ngIf="showUserMenu">Users</a>
+        <a routerLink="/contacts" routerLinkActive="active-link">Contacts</a>
         <a routerLink="/profile" routerLinkActive="active-link">Profile</a>
         <button type="button" class="btn btn-light" (click)="logOut()">{{userName}} |
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"

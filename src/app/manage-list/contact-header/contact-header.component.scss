@@ -1,6 +1,15 @@
 .main-header {
-    background-color: black;
+    background-color: #005d81;
     padding: 5px;
+    align-items: center;
+    h2{
+        font-size: 25px;
+    font-family: cursive;
+    }
+    .logo{
+        display: flex;
+        align-items: center;
+    }
 }
 .profile{
     display: flex;
@@ -11,7 +20,7 @@
         position: relative;
         text-decoration: none;
         font-weight: 400;
-        color: rgb(119, 119, 119);
+        color: rgb(195 195 195);
         transition: all .35s ease;
     
         &::before {
