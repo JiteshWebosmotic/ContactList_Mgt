@@ -9,6 +9,11 @@ import { CookieService } from 'ngx-cookie-service';
 import { LoginModule } from './login/login.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HttpClientModule } from '@angular/common/http';
+import { NgxsModule } from '@ngxs/store';
+import { userState } from './store/state/user.state';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { contactState } from './store/state/contact.state';
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,6 +31,12 @@ import { HttpClientModule } from '@angular/common/http';
       positionClass: 'toast-bottom-right',
       preventDuplicates: true,
     }), // ToastrModule added
+    NgxsModule.forRoot([
+      userState,
+      contactState
+    ]),
+    StoreDevtoolsModule,
+    NgxsReduxDevtoolsPluginModule.forRoot()
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

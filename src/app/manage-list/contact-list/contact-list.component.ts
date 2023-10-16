@@ -2,8 +2,8 @@ import { Component, ViewChild } from '@angular/core';
 import { AddEditContactComponent } from '../add-edit-contact/add-edit-contact.component';
 import { ContactService } from 'src/app/services/contact.service';
 import { UserService } from 'src/app/services/user.service';
-import { ContactData } from 'src/app/services/model-service.service';
 import Swal from 'sweetalert2';
+import { ContactData } from 'src/app/models/contact.model';
 
 @Component({
   selector: 'app-contact-list',

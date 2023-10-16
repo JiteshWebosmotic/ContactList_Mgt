@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
+import { User } from 'src/app/models/contact.model';
 import { ContactService } from 'src/app/services/contact.service';
-import { User } from 'src/app/services/model-service.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({

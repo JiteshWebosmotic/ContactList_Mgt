@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
-import { ContactData } from './model-service.service';
+import { ContactData } from '../models/contact.model';
 
 
 @Injectable({

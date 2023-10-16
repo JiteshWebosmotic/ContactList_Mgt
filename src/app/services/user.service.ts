@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { LocalStorageService } from './local-storage.service';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { ContactData, User } from './model-service.service';
 import { BehaviorSubject } from 'rxjs';
+import { ContactData, User } from '../models/contact.model';
+import { Store } from '@ngxs/store';
+import { addUser, editUser, getUsers } from '../store/action/user.action';
 
 @Injectable({
   providedIn: 'root'
@@ -16,16 +18,19 @@ export class UserService {
     private localStorageService: LocalStorageService,
     private router: Router,
     private coockieservice: CookieService,
+    private store: Store
   ) { }
 
   registerUser(data: any) {
     this.contactData = this.localStorageService.loadLocalStorageData();
-    let available = this.contactData.user.find((u:User) => u.email === data.email)
+    let available = this.contactData.user.find((u: User) => u.email === data.email)
     if (available) {
       return false;
     } else {
       let newId = this.localStorageService.create_UUID();
-      this.contactData.user.push({ id: newId, name: data.fName, email: data.email, password: data.password, role: "USER" });
+      let newUser = { id: newId, name: data.fName, email: data.email, password: data.password, role: "USER" };
+      this.contactData.user.push(newUser);
+      this.store.dispatch(new addUser(newUser));
       this.localStorageService.setLocalStorageData(this.contactData);
       return true;
     }
@@ -33,7 +38,7 @@ export class UserService {
 
   loginUser(data: any) {
     this.contactData = this.localStorageService.loadLocalStorageData();
-    let validEmail = this.contactData.user.find((u:User) => {
+    let validEmail = this.contactData.user.find((u: User) => {
       if ((u.email === data.email) && (u.password === data.password)) {
         this.coockieservice.set("ConatctApp", this.localStorageService.encryptCookieData(u.id))
         return true;
@@ -59,14 +64,15 @@ export class UserService {
 
   updateUserDetail(id: string, data: any) {
     this.contactData = this.localStorageService.loadLocalStorageData();
-    let available = this.contactData.user.find((u:User) => (u.email === data.email && u.id != id))
+    let available = this.contactData.user.find((u: User) => (u.email === data.email && u.id != id))
     if (available) {
       return false;
     } else {
-      this.contactData.user.map((m:User) => {
+      this.contactData.user.map((m: User) => {
         if (m.id === id) {
           m.name = data.fName;
           m.email = data.email;
+          this.store.dispatch(new editUser({ id: id, ...data }))
         }
       })
       this.localStorageService.setLocalStorageData(this.contactData);
@@ -74,24 +80,29 @@ export class UserService {
     }
   }
 
-  getUsersList(pageSize: number, start: number, searchTerm?: string) {    
+  getUsersList(pageSize: number, start: number, searchTerm?: string) {
     //Get Data from the local storage
     this.contactData = this.localStorageService.loadLocalStorageData();
 
     //Load data in array
-    if(searchTerm){
+    if (searchTerm) {
       this.contactData.user = this.contactData.user.filter((item: User) => (item.name.includes(searchTerm) || item.email.includes(searchTerm)));
     } else {
       this.contactData.user = this.contactData.user;
-    } 
+    }
 
     //Load the pagger
-    let perPage = Math.ceil(this.contactData.user.length/pageSize);
-    this.paggerSize = new Array(perPage).fill(1).map((d,i)=>++i);
+    let perPage = Math.ceil(this.contactData.user.length / pageSize);
+    this.paggerSize = new Array(perPage).fill(1).map((d, i) => ++i);
 
     //return the data according the page
-    let endPage = pageSize * (start ? start : 1); 
+    let endPage = pageSize * (start ? start : 1);
     let startPage = endPage - pageSize;
-    return this.contactData.user.slice(startPage,endPage);
+    return this.contactData.user.slice(startPage, endPage);
+  }
+
+  loadUserData() {
+    this.contactData = this.localStorageService.loadLocalStorageData();
+    this.store.dispatch(new getUsers(this.contactData.user));
   }
 }
