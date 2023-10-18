@@ -42,7 +42,7 @@ export class ContactListComponent {
   saveChanges(type: string) {
     if (this.addEditComponent?.contactForm.valid) {
       if (type === "Edit") {
-        this.contactService.editContact(this.addEditComponent?.contactForm.value, this.addEditComponent?.imageSrc)
+        this.contactService.editContact(this.userDetail.id,this.addEditComponent?.contactForm.value, this.addEditComponent?.imageSrc)
       } else {
         this.contactService.addContact(this.addEditComponent?.contactForm.value, this.addEditComponent?.imageSrc, this.userDetail.id);
       }

@@ -17,23 +17,29 @@ export class contactStateModel {
 
 @Injectable()
 export class contactState {
-    constructor(){}
+    constructor(
+        private localStorageService: LocalStorageService,
+    ) { }
     @Selector()
     static getContacts(state: contactStateModel) {
         return state.contact;
     }
 
     @Action(loadContact)
-    get({ setState }: StateContext<contactStateModel>, { payload }: loadContact) {
+    load({ setState }: StateContext<contactStateModel>, { payload }: loadContact) {
         setState({ contact: payload });
     }
-
+ 
     @Action(addContact)
     add({ getState, patchState }: StateContext<contactStateModel>, { payload }: addContact) {
         const state = getState();
-        patchState({
-            contact: [...state.contact, payload]
-        })
+        let available = state.contact.find((con: ContactList) => con.email === payload.email)
+        if (available) {
+            throw new Error('Email id is already in Used.');
+        } else {
+            patchState({contact: [...state.contact, payload]});
+            this.localStorageService.setContactList(state.contact);
+        }
     }
 
     @Action(editContact)
@@ -43,6 +49,7 @@ export class contactState {
             contactData.id === payload.id ? payload : contactData
         );
         setState({ contact: updatedContacts });
+        this.localStorageService.setContactList(updatedContacts);
     }
 
     @Action(removeContact)
@@ -50,5 +57,6 @@ export class contactState {
         const state = getState();
         const updatedContacts = state.contact.filter((contactData) => contactData.id !== id);
         setState({ contact: updatedContacts });
+        this.localStorageService.setContactList(updatedContacts);
     }
 }

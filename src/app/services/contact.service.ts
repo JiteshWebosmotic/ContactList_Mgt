@@ -42,59 +42,22 @@ export class ContactService {
 
   addContact(data: any, image: string, id: string) {
     //Get Data from the local storage
-    this.contactData = this.localStorageService.loadLocalStorageData();
-
-    //Check the availabity
-    let available = this.contactData.contactList.find((con: ContactList) => con.email === data.email)
-    if (available) {
-      this.toastr.error('Failed to add conatct.', 'Email id is already in Used.');
-    } else {
-      this.contactData.contactList.forEach(m => m.userId === id);
-
-      //Create new UUID
-      let newId = this.localStorageService.create_UUID();
-      let newContact = { userId: id, id: newId, name: data.name, number: data.number, email: data.email, image: image };
-      this.contactData.contactList.push(newContact);
-      this.store.dispatch(new addContact(newContact));
-
-      //Save data in local storage
-      this.localStorageService.setLocalStorageData(this.contactData);
+    let newId = this.localStorageService.create_UUID();
+    let newContact = { userId: id, id: newId, name: data.name, number: data.number, email: data.email, image: image };
+    this.store.dispatch(new addContact(newContact)).subscribe((val)=>{
       this.toastr.success('Contact added Successfull');
-    }
+    },(err)=>{
+      this.toastr.error('Failed to add conatct.', err);
+    });
   }
 
-  editContact(data: any, image: string) {
-    //Get Data from the local storage
-    this.contactData = this.localStorageService.loadLocalStorageData();
-
-    //Update the data
-    this.contactData.contactList.map((m: ContactList) => {
-      if (m.id === data.id) {
-        m.name = data.name;
-        m.number = data.number;
-        m.image = image;
-        m.email = data.email;
-        this.store.dispatch(new editContact({ ...data, image: image }));
-
-        //Save data in local storage
-        this.localStorageService.setLocalStorageData(this.contactData);
-        this.toastr.success('Contact updated Successfull');
-      }
-    });
-
+  editContact(id: string,data: any, image: string) {
+    this.store.dispatch(new editContact({userId: id, ...data, image: image }));
+    this.toastr.success('Contact updated Successfull');
   }
 
   removeContact(id: string) {
-
-    //Get Data from the local storage
-    this.contactData = this.localStorageService.loadLocalStorageData();
-
-    //Remove specific contact 
-    this.contactData.contactList = this.contactData.contactList.filter((item: ContactList) => item.id !== id)
     this.store.dispatch(new removeContact(id));
-
-    //Save data in local storage
-    this.localStorageService.setLocalStorageData(this.contactData);
     this.toastr.success('Contact removed Successfull');
   }
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
-import { ContactData } from '../models/contact.model';
+import { ContactData, ContactList, User } from '../models/contact.model';
 
 
 @Injectable({
@@ -23,6 +23,14 @@ export class LocalStorageService {
 
   setLocalStorageData(contactData: any) {
     localStorage.setItem("contactData", JSON.stringify(contactData));
+  }
+
+  setContactList(contactList:ContactList[]){
+    localStorage.setItem("contactData", JSON.stringify({...this.contactData,contactList: contactList}));
+  }
+
+  setUserList(userList: User[]){
+    localStorage.setItem("contactData", JSON.stringify({...this.contactData, user: userList}));
   }
 
   create_UUID() {

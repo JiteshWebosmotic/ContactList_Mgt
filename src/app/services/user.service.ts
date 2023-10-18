@@ -22,18 +22,15 @@ export class UserService {
   ) { }
 
   registerUser(data: any) {
-    this.contactData = this.localStorageService.loadLocalStorageData();
-    let available = this.contactData.user.find((u: User) => u.email === data.email)
-    if (available) {
-      return false;
-    } else {
-      let newId = this.localStorageService.create_UUID();
-      let newUser = { id: newId, name: data.fName, email: data.email, password: data.password, role: "USER" };
-      this.contactData.user.push(newUser);
-      this.store.dispatch(new addUser(newUser));
-      this.localStorageService.setLocalStorageData(this.contactData);
-      return true;
-    }
+    let newId = this.localStorageService.create_UUID();
+    let newUser = { id: newId, name: data.fName, email: data.email, password: data.password, role: "USER" };
+    let result = false;
+    this.store.dispatch(new addUser(newUser)).subscribe((success)=>{
+      result = true;
+    },(err)=>{
+      result = false;
+    });
+    return result;
   }
 
   loginUser(data: any) {
@@ -63,21 +60,13 @@ export class UserService {
   }
 
   updateUserDetail(id: string, data: any) {
-    this.contactData = this.localStorageService.loadLocalStorageData();
-    let available = this.contactData.user.find((u: User) => (u.email === data.email && u.id != id))
-    if (available) {
-      return false;
-    } else {
-      this.contactData.user.map((m: User) => {
-        if (m.id === id) {
-          m.name = data.fName;
-          m.email = data.email;
-          this.store.dispatch(new editUser({ id: id, ...data }))
-        }
-      })
-      this.localStorageService.setLocalStorageData(this.contactData);
-      return true;
-    }
+    let result = false;
+    this.store.dispatch(new editUser({ id: id, ...data })).subscribe((success)=>{
+      result = true;
+    },(err)=>{
+      result = false;
+    });
+    return result;
   }
 
   getUsersList(pageSize: number, start: number, searchTerm?: string) {

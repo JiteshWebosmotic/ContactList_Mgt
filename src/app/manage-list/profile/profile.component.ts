@@ -40,6 +40,5 @@ export class ProfileComponent {
     } else{
       this.toastr.error('Failed to update profile details', 'Email id is already in Used.');
     }
-    
   }
 }
