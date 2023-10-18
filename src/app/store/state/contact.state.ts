@@ -1,6 +1,8 @@
-import { Action, Selector, State, StateContext } from "@ngxs/store";
+import { Action, Selector, State, StateContext, createSelector } from "@ngxs/store";
 import { ContactList } from "src/app/models/contact.model";
-import { addContact, editContact, getContact, removeContact } from "../action/contact.action";
+import { addContact, editContact, loadContact, removeContact } from "../action/contact.action";
+import { LocalStorageService } from "src/app/services/local-storage.service";
+import { Injectable } from "@angular/core";
 
 export class contactStateModel {
     contact: ContactList[] = [];
@@ -13,14 +15,16 @@ export class contactStateModel {
     }
 })
 
+@Injectable()
 export class contactState {
+    constructor(){}
     @Selector()
     static getContacts(state: contactStateModel) {
         return state.contact;
     }
 
-    @Action(getContact)
-    get({ setState }: StateContext<contactStateModel>, { payload }: getContact) {
+    @Action(loadContact)
+    get({ setState }: StateContext<contactStateModel>, { payload }: loadContact) {
         setState({ contact: payload });
     }
 

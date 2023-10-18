@@ -1,7 +1,7 @@
 import { User } from "src/app/models/contact.model";
 
-export class getUsers {
-    static readonly type = '[User] get user';
+export class loadUsers {
+    static readonly type = '[User] load user';
     constructor(public payload: User[]) { }
 }
 

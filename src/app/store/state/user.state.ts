@@ -1,6 +1,7 @@
 import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { User } from "src/app/models/contact.model";
-import { addUser, editUser, getUsers } from "../action/user.action";
+import { addUser, editUser, loadUsers } from "../action/user.action";
+import { Injectable } from "@angular/core";
 
 export class userStateModel {
     user: User[] = [];
@@ -13,14 +14,17 @@ export class userStateModel {
     }
 })
 
+@Injectable()
 export class userState {
+    constructor(){}
+
     @Selector()
     static getUser(state: userStateModel) {
         return state.user;
     }
 
-    @Action(getUsers)
-    get({ setState }: StateContext<userStateModel>, { payload }: getUsers) {
+    @Action(loadUsers)
+    get({ setState }: StateContext<userStateModel>, { payload }: loadUsers) {
         setState({ user: payload });
     }
 

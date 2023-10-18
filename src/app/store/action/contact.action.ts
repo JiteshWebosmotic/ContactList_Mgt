@@ -1,7 +1,7 @@
 import { ContactList } from "src/app/models/contact.model";
 
-export class getContact {
-    static readonly type = '[Contact] get contact';
+export class loadContact {
+    static readonly type = '[Contact] Load contact';
     constructor(public payload: ContactList[]) { }
 }
 

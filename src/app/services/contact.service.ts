@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LocalStorageService } from './local-storage.service';
 import { ToastrService } from 'ngx-toastr';
 import { ContactData, ContactList } from '../models/contact.model';
-import { addContact, editContact, getContact, removeContact } from '../store/action/contact.action';
+import { addContact, editContact, loadContact, removeContact } from '../store/action/contact.action';
 import { Store } from '@ngxs/store';
 
 @Injectable({
@@ -100,6 +100,6 @@ export class ContactService {
 
   loadContactData() {
     this.contactData = this.localStorageService.loadLocalStorageData();
-    this.store.dispatch(new getContact(this.contactData.contactList));
+    this.store.dispatch(new loadContact(this.contactData.contactList));
   }
 }

@@ -5,7 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { BehaviorSubject } from 'rxjs';
 import { ContactData, User } from '../models/contact.model';
 import { Store } from '@ngxs/store';
-import { addUser, editUser, getUsers } from '../store/action/user.action';
+import { addUser, editUser, loadUsers } from '../store/action/user.action';
 
 @Injectable({
   providedIn: 'root'
@@ -103,6 +103,6 @@ export class UserService {
 
   loadUserData() {
     this.contactData = this.localStorageService.loadLocalStorageData();
-    this.store.dispatch(new getUsers(this.contactData.user));
+    this.store.dispatch(new loadUsers(this.contactData.user));
   }
 }
