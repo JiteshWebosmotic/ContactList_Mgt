@@ -25,6 +25,35 @@ export class contactState {
         return state.contact;
     }
 
+    // ##### need to test and modify the selector
+    
+    // static getPaggerSize = createSelector(
+    //     [contactState.getContacts], // Input selector
+    //     (items: any[]) => {
+    //         return (pageSize: number) => {
+    //             let perPage = Math.ceil(items.length / pageSize);
+    //             return new Array(perPage).fill(1).map((d, i) => ++i);
+    //         };
+    //     }
+    // );
+
+    // static getPaginatedItems = createSelector(
+    //     [contactState.getContacts],
+    //     (contactList: any[]) => {
+    //         return (id: string, pageSize: number, start: number, searchTerm?: string) => {
+    //             if (searchTerm) {
+    //                 contactList = contactList.filter((item: ContactList) => item.userId === id && (item.name.includes(searchTerm) || item.email.includes(searchTerm)));
+    //             } else {
+    //                 contactList = contactList.filter((m: ContactList) => m.userId === id);
+    //             }
+    //             //return the data according the page
+    //             let endPage = pageSize * (start ? start : 1);
+    //             let startPage = endPage - pageSize;
+
+    //             return contactList.slice(startPage, endPage);
+    //         }
+    //     });
+
     @Action(loadContact)
     load({ setState }: StateContext<contactStateModel>, { payload }: loadContact) {
         setState({ contact: payload });
@@ -38,7 +67,7 @@ export class contactState {
             throw new Error('Email id is already in Used.');
         } else {
             patchState({contact: [...state.contact, payload]});
-            this.localStorageService.setContactList(state.contact);
+            this.localStorageService.setContactList([...state.contact, payload]);
         }
     }
 

@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
 import { User } from 'src/app/models/contact.model';
 import { ContactService } from 'src/app/services/contact.service';
 import { UserService } from 'src/app/services/user.service';
+import { userState } from 'src/app/store/state/user.state';
 
 @Component({
   selector: 'app-user-list',
@@ -15,13 +18,20 @@ export class UserListComponent {
   pagginationNumber: number[] = [];
   currentPage: number = 1;
   totalPages: number = 1;
+  @Select(userState.getUser) getuser$: Observable<User> | undefined;
+  subscription: Subscription | undefined;
+  
   constructor(
-    private contactService: ContactService,
     private userService: UserService
   ) { }
 
   ngOnInit() {
-    this.loadData();
+    this.subscription = this.getuser$?.subscribe((data:any)=>{
+      this.userList = data;
+
+      // ### get the state data. but still using local storage data for all show related oprtaions
+      this.loadData();
+    })
   }
 
   loadData(start?: number) {
@@ -58,5 +68,9 @@ export class UserListComponent {
       this.currentPage = page;
       this.loadData(page);
     }
+  }
+
+  ngOnDestroy() {
+    this.subscription?.unsubscribe();
   }
 }

@@ -9,18 +9,18 @@ import { Store } from '@ngxs/store';
   providedIn: 'root'
 })
 export class ContactService {
-  contactData: ContactData;
+  contactData: ContactData | undefined;
   paggerSize: number[] = [];
   constructor(
     private localStorageService: LocalStorageService,
     private toastr: ToastrService,
     private store: Store
-  ) {
-    this.contactData = this.localStorageService.loadLocalStorageData();
-  }
+  ) {}
 
   getContectList(id: string, pageSize: number, start: number, searchTerm?: string) {
     //Get Data from the local storage
+
+    // ####  use customize selector for get contact data directly from the state
     this.contactData = this.localStorageService.loadLocalStorageData();
 
     //Load data in array
@@ -41,7 +41,6 @@ export class ContactService {
   }
 
   addContact(data: any, image: string, id: string) {
-    //Get Data from the local storage
     let newId = this.localStorageService.create_UUID();
     let newContact = { userId: id, id: newId, name: data.name, number: data.number, email: data.email, image: image };
     this.store.dispatch(new addContact(newContact)).subscribe((val)=>{
@@ -52,6 +51,7 @@ export class ContactService {
   }
 
   editContact(id: string,data: any, image: string) {
+    // ###### use email condition same as in add 
     this.store.dispatch(new editContact({userId: id, ...data, image: image }));
     this.toastr.success('Contact updated Successfull');
   }

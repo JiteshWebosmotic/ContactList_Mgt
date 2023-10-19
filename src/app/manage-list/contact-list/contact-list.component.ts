@@ -3,7 +3,10 @@ import { AddEditContactComponent } from '../add-edit-contact/add-edit-contact.co
 import { ContactService } from 'src/app/services/contact.service';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
-import { ContactData } from 'src/app/models/contact.model';
+import { ContactData, ContactList } from 'src/app/models/contact.model';
+import { Select } from '@ngxs/store';
+import { contactState } from 'src/app/store/state/contact.state';
+import { Observable, Subscription, map } from 'rxjs';
 
 @Component({
   selector: 'app-contact-list',
@@ -12,7 +15,7 @@ import { ContactData } from 'src/app/models/contact.model';
 })
 export class ContactListComponent {
   contactData:ContactData | undefined;
-  contactList: any = [];
+  contactList: ContactList[] = [];
   userDetail: any;
   modelTitle: string = "Add";
   searchTerm:string = '';
@@ -22,7 +25,9 @@ export class ContactListComponent {
   totalPages:number = 1;
   noImage: string ='https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/800px-Image_not_available.png';
   @ViewChild(AddEditContactComponent) addEditComponent: AddEditContactComponent | undefined
-
+  @Select(contactState.getContacts) getcontacts$: Observable<ContactList> | undefined;
+  subscription: Subscription | undefined;
+  
   constructor(
     private contactService: ContactService,
     private userService: UserService
@@ -30,13 +35,28 @@ export class ContactListComponent {
 
   ngOnInit() {
     this.userDetail = this.userService.getUserDetail();
-    this.loadData();
+    this.subscription = this.getcontacts$?.subscribe((data:any)=>{
+      this.contactList = data;
+
+      // ### get the state data. but still using local storage data for all show related oprtaions
+      this.loadData();
+    })
   }
 
   loadData(start?:number) {
     this.contactList = this.contactService.getContectList(this.userDetail.id,this.pageSize, start ? start : 1,this.searchTerm);
     this.pagginationNumber = this.contactService.paggerSize;
     this.loadPaggination();
+
+    // #### this portion related to the custome selector. need to test and modify. 
+     
+    // this.store.select(contactState.getPaginatedItems).subscribe((filter)=>{
+    //   this.contactList = filter(this.userDetail.id,this.pageSize, start ? start : 1,this.searchTerm);
+    //   this.store.select(contactState.getPaggerSize).subscribe((page)=>{
+    //     this.pagginationNumber = page(this.pageSize);
+    //     this.totalPages = this.pagginationNumber.length;
+    //   })
+    // });
   }
 
   saveChanges(type: string) {
@@ -138,5 +158,9 @@ export class ContactListComponent {
       this.currentPage = page;
       this.loadData(page);
     } 
+  }
+
+  ngOnDestroy() {
+    this.subscription?.unsubscribe();
   }
 }
