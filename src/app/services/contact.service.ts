@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LocalStorageService } from './local-storage.service';
 import { ToastrService } from 'ngx-toastr';
 import { ContactData, ContactList } from '../models/contact.model';
-import { addContact, editContact, loadContact, removeContact } from '../store/action/contact.action';
+import { addContact, editContact, loadContact, removeContact } from '../store/state/contact.state';
 import { Store } from '@ngxs/store';
 import { take } from 'rxjs';
 

@@ -5,7 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { BehaviorSubject, take } from 'rxjs';
 import { ContactData, User } from '../models/contact.model';
 import { Store } from '@ngxs/store';
-import { addUser, editUser, loadUsers } from '../store/action/user.action';
+import { addUser, editUser, loadUsers } from '../store/state/user.state';
 
 @Injectable({
   providedIn: 'root'
