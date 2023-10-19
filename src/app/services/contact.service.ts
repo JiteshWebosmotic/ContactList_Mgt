@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ContactData, ContactList } from '../models/contact.model';
 import { addContact, editContact, loadContact, removeContact } from '../store/action/contact.action';
 import { Store } from '@ngxs/store';
+import { take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class ContactService {
   addContact(data: any, image: string, id: string) {
     let newId = this.localStorageService.create_UUID();
     let newContact = { userId: id, id: newId, name: data.name, number: data.number, email: data.email, image: image };
-    this.store.dispatch(new addContact(newContact)).subscribe((val)=>{
+    this.store.dispatch(new addContact(newContact)).pipe(take(1)).subscribe((val)=>{
       this.toastr.success('Contact added Successfull');
     },(err)=>{
       this.toastr.error('Failed to add conatct.', err);

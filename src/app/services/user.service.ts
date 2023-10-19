@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LocalStorageService } from './local-storage.service';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, take } from 'rxjs';
 import { ContactData, User } from '../models/contact.model';
 import { Store } from '@ngxs/store';
 import { addUser, editUser, loadUsers } from '../store/action/user.action';
@@ -25,7 +25,7 @@ export class UserService {
     let newId = this.localStorageService.create_UUID();
     let newUser = { id: newId, name: data.fName, email: data.email, password: data.password, role: "USER" };
     let result = false;
-    this.store.dispatch(new addUser(newUser)).subscribe((success)=>{
+    this.store.dispatch(new addUser(newUser)).pipe(take(1)).subscribe((success)=>{
       result = true;
     },(err)=>{
       result = false;
@@ -61,7 +61,7 @@ export class UserService {
 
   updateUserDetail(id: string, data: any) {
     let result = false;
-    this.store.dispatch(new editUser({ id: id, ...data })).subscribe((success)=>{
+    this.store.dispatch(new editUser({ id: id, ...data })).pipe(take(1)).subscribe((success)=>{
       result = true;
     },(err)=>{
       result = false;

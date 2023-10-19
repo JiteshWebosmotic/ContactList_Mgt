@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import { ContactData, ContactList } from 'src/app/models/contact.model';
 import { Select, Store } from '@ngxs/store';
 import { contactState } from 'src/app/store/state/contact.state';
-import { Observable, Subscription, map } from 'rxjs';
+import { Observable, Subject,takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-contact-list',
@@ -26,7 +26,7 @@ export class ContactListComponent {
   noImage: string ='https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/800px-Image_not_available.png';
   @ViewChild(AddEditContactComponent) addEditComponent: AddEditContactComponent | undefined
   @Select(contactState.getContacts) getcontacts$: Observable<ContactList> | undefined;
-  subscription: Subscription | undefined;
+  destroy$ = new Subject();
   
   constructor(
     private contactService: ContactService,
@@ -40,7 +40,7 @@ export class ContactListComponent {
   }
 
   loadData(start?:number) {
-    this.store.select(contactState.getPaginatedItems).subscribe((filter)=>{
+    this.store.select(contactState.getPaginatedItems).pipe(takeUntil(this.destroy$)).subscribe((filter)=>{
       let data = filter(this.userDetail.id, this.pageSize, start ? start : 1, this.searchTerm);
       this.contactList = data.contact;
       this.pagginationNumber = data.paggger;
@@ -145,6 +145,6 @@ export class ContactListComponent {
   }
 
   ngOnDestroy() {
-    this.subscription?.unsubscribe();
+    this.destroy$.complete();
   }
 }

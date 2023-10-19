@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
 
@@ -11,13 +11,13 @@ import Swal from 'sweetalert2';
 export class ContactHeaderComponent {
   userName: string = '';
   showUserMenu: boolean = false;
-  subscription: Subscription | undefined;
+  destroy$ = new Subject();
   constructor(
     private userService: UserService
   ) { }
 
   ngOnInit() {
-    this.subscription = this.userService.userData.subscribe((data)=>{
+    this.userService.userData.pipe(takeUntil(this.destroy$)).subscribe((data)=>{
       this.userName = data?.name;
       if(data?.role === "ADMIN"){
         this.showUserMenu = true;
@@ -42,7 +42,7 @@ export class ContactHeaderComponent {
   }
 
   ngOnDestroy() {
-    this.subscription?.unsubscribe();
+    this.destroy$.complete();
   }
 
 }

@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { User } from 'src/app/models/contact.model';
-import { ContactService } from 'src/app/services/contact.service';
 import { UserService } from 'src/app/services/user.service';
 import { userState } from 'src/app/store/state/user.state';
 
@@ -19,7 +18,7 @@ export class UserListComponent {
   currentPage: number = 1;
   totalPages: number = 1;
   @Select(userState.getUser) getuser$: Observable<User> | undefined;
-  subscription: Subscription | undefined;
+  destroy$ = new Subject();
   
   constructor(
     private userService: UserService,
@@ -31,7 +30,7 @@ export class UserListComponent {
   }
 
   loadData(start?: number) {
-    this.store.select(userState.getPaginatedItems).subscribe((filter)=>{
+    this.store.select(userState.getPaginatedItems).pipe(takeUntil(this.destroy$)).subscribe((filter)=>{
       let data = filter(this.pageSize, start ? start : 1, this.searchTerm);
       this.userList = data.userList;
       this.pagginationNumber = data.paggger;
@@ -65,6 +64,6 @@ export class UserListComponent {
   }
 
   ngOnDestroy() {
-    this.subscription?.unsubscribe();
+    this.destroy$.complete();
   }
 }
