@@ -68,28 +68,6 @@ export class UserService {
     });
     return result;
   }
-
-  getUsersList(pageSize: number, start: number, searchTerm?: string) {
-    //Get Data from the local storage
-    this.contactData = this.localStorageService.loadLocalStorageData();
-
-    //Load data in array
-    if (searchTerm) {
-      this.contactData.user = this.contactData.user.filter((item: User) => (item.name.includes(searchTerm) || item.email.includes(searchTerm)));
-    } else {
-      this.contactData.user = this.contactData.user;
-    }
-
-    //Load the pagger
-    let perPage = Math.ceil(this.contactData.user.length / pageSize);
-    this.paggerSize = new Array(perPage).fill(1).map((d, i) => ++i);
-
-    //return the data according the page
-    let endPage = pageSize * (start ? start : 1);
-    let startPage = endPage - pageSize;
-    return this.contactData.user.slice(startPage, endPage);
-  }
-
   loadUserData() {
     this.contactData = this.localStorageService.loadLocalStorageData();
     this.store.dispatch(new loadUsers(this.contactData.user));

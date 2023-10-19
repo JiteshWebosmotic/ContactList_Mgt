@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { User } from 'src/app/models/contact.model';
 import { ContactService } from 'src/app/services/contact.service';
@@ -22,45 +22,39 @@ export class UserListComponent {
   subscription: Subscription | undefined;
   
   constructor(
-    private userService: UserService
+    private userService: UserService,
+    private store: Store
   ) { }
 
   ngOnInit() {
-    this.subscription = this.getuser$?.subscribe((data:any)=>{
-      this.userList = data;
-
-      // ### get the state data. but still using local storage data for all show related oprtaions
-      this.loadData();
-    })
+    this.loadData();
   }
 
   loadData(start?: number) {
-    this.userList = this.userService.getUsersList(this.pageSize, start ? start : 1, this.searchTerm);
-    this.pagginationNumber = this.userService.paggerSize;
-    this.loadPaggination();
+    this.store.select(userState.getPaginatedItems).subscribe((filter)=>{
+      let data = filter(this.pageSize, start ? start : 1, this.searchTerm);
+      this.userList = data.userList;
+      this.pagginationNumber = data.paggger;
+      this.totalPages = this.pagginationNumber.length;
+    });
   }
 
   //Search
   search(){
-    this.loadData();
     this.currentPage = 1;
+    this.userService.loadUserData();
   }
 
   searchClear(){
     this.searchTerm = "";
-    this.loadData();
+    this.userService.loadUserData();
   }
 
   //Paggination
   onSelectPageSize($event: any) {
     this.pageSize = $event.target.value;
-    this.loadData();
     this.currentPage = 1;
-  }
-
-  loadPaggination() {
-    this.pagginationNumber = this.userService.paggerSize;
-    this.totalPages = this.pagginationNumber.length;
+    this.loadData();
   }
 
   getPage(page: number) {

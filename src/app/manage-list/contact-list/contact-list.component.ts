@@ -4,7 +4,7 @@ import { ContactService } from 'src/app/services/contact.service';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
 import { ContactData, ContactList } from 'src/app/models/contact.model';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { contactState } from 'src/app/store/state/contact.state';
 import { Observable, Subscription, map } from 'rxjs';
 
@@ -30,33 +30,22 @@ export class ContactListComponent {
   
   constructor(
     private contactService: ContactService,
-    private userService: UserService
+    private userService: UserService,
+    private store: Store
   ) {}
 
   ngOnInit() {
     this.userDetail = this.userService.getUserDetail();
-    this.subscription = this.getcontacts$?.subscribe((data:any)=>{
-      this.contactList = data;
-
-      // ### get the state data. but still using local storage data for all show related oprtaions
-      this.loadData();
-    })
+    this.loadData();
   }
 
   loadData(start?:number) {
-    this.contactList = this.contactService.getContectList(this.userDetail.id,this.pageSize, start ? start : 1,this.searchTerm);
-    this.pagginationNumber = this.contactService.paggerSize;
-    this.loadPaggination();
-
-    // #### this portion related to the custome selector. need to test and modify. 
-     
-    // this.store.select(contactState.getPaginatedItems).subscribe((filter)=>{
-    //   this.contactList = filter(this.userDetail.id,this.pageSize, start ? start : 1,this.searchTerm);
-    //   this.store.select(contactState.getPaggerSize).subscribe((page)=>{
-    //     this.pagginationNumber = page(this.pageSize);
-    //     this.totalPages = this.pagginationNumber.length;
-    //   })
-    // });
+    this.store.select(contactState.getPaginatedItems).subscribe((filter)=>{
+      let data = filter(this.userDetail.id, this.pageSize, start ? start : 1, this.searchTerm);
+      this.contactList = data.contact;
+      this.pagginationNumber = data.paggger;
+      this.totalPages = this.pagginationNumber.length;
+    });
   }
 
   saveChanges(type: string) {
@@ -132,25 +121,20 @@ export class ContactListComponent {
 
   //Search
   search(){
-    this.loadData();
     this.currentPage = 1;
+    this.contactService.loadContactData();
   }
 
   searchClear(){
     this.searchTerm = "";
-    this.loadData();
+    this.contactService.loadContactData();
   }
   
   //Paggination
   onSelectPageSize($event: any){
     this.pageSize = $event.target.value;
-    this.loadData();
     this.currentPage = 1;
-  }
-
-  loadPaggination(){
-    this.pagginationNumber = this.contactService.paggerSize;
-    this.totalPages = this.pagginationNumber.length; 
+    this.loadData();
   }
 
   getPage(page: number){

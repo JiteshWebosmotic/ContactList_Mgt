@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext } from "@ngxs/store";
+import { Action, Selector, State, StateContext, createSelector } from "@ngxs/store";
 import { User } from "src/app/models/contact.model";
 import { addUser, editUser, loadUsers } from "../action/user.action";
 import { Injectable } from "@angular/core";
@@ -23,6 +23,26 @@ export class userState {
     static getUser(state: userStateModel) {
         return state.user;
     }
+
+    // Custom selector
+    static getPaginatedItems = createSelector(
+        [userState.getUser],
+        (userList: User[]) => {
+            return (pageSize: number, start: number, searchTerm?: string) => {
+                if (searchTerm) {
+                    userList = userList.filter((item: User) => (item.name?.includes(searchTerm) || item.email?.includes(searchTerm)));
+                }
+                //return the data according the page
+                let endPage = pageSize * (start ? start : 1);
+                let startPage = endPage - pageSize;
+
+                let perPage = Math.ceil(userList.length / pageSize);
+                let paggger = new Array(perPage).fill(1).map((d, i) => ++i);
+
+                return { userList: userList.slice(startPage, endPage), paggger: paggger };
+            }
+        }
+    );
 
     @Action(loadUsers)
     load({ setState }: StateContext<userStateModel>, { payload }: loadUsers) {
@@ -49,7 +69,7 @@ export class userState {
             throw new Error('Email id is already in Used.');
         } else {
             const updatedUsers = state.user.map((userData) =>
-            userData.id === payload.id ? payload : userData
+                userData.id === payload.id ? payload : userData
             );
             setState({ user: updatedUsers });
             this.localStorageService.setUserList(updatedUsers);

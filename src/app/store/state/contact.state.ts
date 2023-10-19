@@ -17,42 +17,34 @@ export class contactStateModel {
 
 @Injectable()
 export class contactState {
-    constructor(
-        private localStorageService: LocalStorageService,
-    ) { }
+    constructor(private localStorageService: LocalStorageService) { }
+
     @Selector()
     static getContacts(state: contactStateModel) {
         return state.contact;
     }
 
-    // ##### need to test and modify the selector
-    
-    // static getPaggerSize = createSelector(
-    //     [contactState.getContacts], // Input selector
-    //     (items: any[]) => {
-    //         return (pageSize: number) => {
-    //             let perPage = Math.ceil(items.length / pageSize);
-    //             return new Array(perPage).fill(1).map((d, i) => ++i);
-    //         };
-    //     }
-    // );
+    // Custom selector
+    static getPaginatedItems = createSelector(
+        [contactState.getContacts],
+        (contactList: ContactList[]) => {
+            return (id: string, pageSize: number, start: number, searchTerm?: string) => {
+                if (searchTerm) {
+                    contactList = contactList.filter((item: ContactList) => item.userId === id && (item.name.includes(searchTerm) || item.email.includes(searchTerm)));
+                } else {
+                    contactList = contactList.filter((m: ContactList) => m.userId === id);
+                }
+                //return the data according the page
+                let endPage = pageSize * (start ? start : 1);
+                let startPage = endPage - pageSize;
 
-    // static getPaginatedItems = createSelector(
-    //     [contactState.getContacts],
-    //     (contactList: any[]) => {
-    //         return (id: string, pageSize: number, start: number, searchTerm?: string) => {
-    //             if (searchTerm) {
-    //                 contactList = contactList.filter((item: ContactList) => item.userId === id && (item.name.includes(searchTerm) || item.email.includes(searchTerm)));
-    //             } else {
-    //                 contactList = contactList.filter((m: ContactList) => m.userId === id);
-    //             }
-    //             //return the data according the page
-    //             let endPage = pageSize * (start ? start : 1);
-    //             let startPage = endPage - pageSize;
+                let perPage = Math.ceil(contactList.length / pageSize);
+                let paggger = new Array(perPage).fill(1).map((d, i) => ++i);
 
-    //             return contactList.slice(startPage, endPage);
-    //         }
-    //     });
+                return {contact: contactList.slice(startPage, endPage), paggger: paggger};
+            }
+        }
+    );
 
     @Action(loadContact)
     load({ setState }: StateContext<contactStateModel>, { payload }: loadContact) {

@@ -17,29 +17,6 @@ export class ContactService {
     private store: Store
   ) {}
 
-  getContectList(id: string, pageSize: number, start: number, searchTerm?: string) {
-    //Get Data from the local storage
-
-    // ####  use customize selector for get contact data directly from the state
-    this.contactData = this.localStorageService.loadLocalStorageData();
-
-    //Load data in array
-    if (searchTerm) {
-      this.contactData.contactList = this.contactData.contactList.filter((item: ContactList) => item.userId === id && (item.name.includes(searchTerm) || item.email.includes(searchTerm)));
-    } else {
-      this.contactData.contactList = this.contactData.contactList.filter((m: ContactList) => m.userId === id);
-    }
-
-    //Load the pagger
-    let perPage = Math.ceil(this.contactData.contactList.length / pageSize);
-    this.paggerSize = new Array(perPage).fill(1).map((d, i) => ++i);
-
-    //return the data according the page
-    let endPage = pageSize * (start ? start : 1);
-    let startPage = endPage - pageSize;
-    return this.contactData.contactList.slice(startPage, endPage);
-  }
-
   addContact(data: any, image: string, id: string) {
     let newId = this.localStorageService.create_UUID();
     let newContact = { userId: id, id: newId, name: data.name, number: data.number, email: data.email, image: image };
