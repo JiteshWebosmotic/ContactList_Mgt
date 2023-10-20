@@ -121,9 +121,15 @@ export class contactState {
         { payload }: editContact
     ) {
         const state = getState();
-        const updatedContacts = state.contact.map((contactData) =>
-            contactData.id === payload.id ? payload : contactData
+
+        // # need to test
+        let index = state.contact.findIndex((contactData) =>
+            contactData.id === payload.id
         );
+        const updatedContacts: ContactList[] = state.contact;
+        
+        if(index) updatedContacts[index] = payload; 
+
         setState({ contact: updatedContacts });
         this.localStorageService.setContactList(updatedContacts);
     }

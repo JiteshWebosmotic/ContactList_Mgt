@@ -21,10 +21,6 @@ export class LocalStorageService {
     return this.contactData;
   }
 
-  setLocalStorageData(contactData: any) {
-    localStorage.setItem("contactData", JSON.stringify(contactData));
-  }
-
   setContactList(contactList:ContactList[]){
     localStorage.setItem("contactData", JSON.stringify({...this.contactData,contactList: contactList}));
   }
