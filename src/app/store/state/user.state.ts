@@ -22,7 +22,7 @@ export class addUser {
 
 export class editUser {
     static readonly type = '[User] edit user';
-    constructor(public payload: User) { }
+    constructor(public payload: any) { }
 }
 
 // #### User State Model ####
@@ -109,7 +109,7 @@ export class userState {
             // Edit logic
             let updatedUsers = [...state.user];
             let index = updatedUsers.findIndex((updatedUsers) => updatedUsers.id === payload.id);
-            if (index >= 0 && index < updatedUsers.length) updatedUsers[index] = payload;
+            if (index >= 0 && index < updatedUsers.length) updatedUsers[index] = {...payload, ...updatedUsers[index]};
 
             setState({ user: updatedUsers });
             this.localStorageService.setUserList(updatedUsers);

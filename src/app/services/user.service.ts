@@ -61,7 +61,7 @@ export class UserService {
 
   updateUserDetail(id: string, data: any) {
     let result = false;
-    this.store.dispatch(new editUser({ id: id, ...data })).pipe(take(1)).subscribe((success)=>{
+    this.store.dispatch(new editUser({ id: id, name: data.fName, email: data.email })).pipe(take(1)).subscribe((success)=>{
       result = true;
     },(err)=>{
       result = false;
