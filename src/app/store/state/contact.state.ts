@@ -104,9 +104,7 @@ export class contactState {
         { payload }: addContact
     ) {
         const state = getState();
-        let available = state.contact.find(
-            (con: ContactList) => con.email === payload.email
-        );
+        let available = state.contact.find((con: ContactList) => con.email === payload.email);
         if (available) {
             throw new Error('Email id is already in Used.');
         } else {
@@ -121,17 +119,13 @@ export class contactState {
         { payload }: editContact
     ) {
         const state = getState();
-
-        // Data is updating but not showing updated value on feed.
-        // let index = state.contact.findIndex((contactData) =>
-        //     contactData.id === payload.id
-        // );
-        // if(index >=0 && index < state.contact.length){
-        //     state.contact[index] = payload;
-        // }
-        let updatedContects = state.contact.map((contactData)=> contactData.id === payload.id ? payload : contactData)
-        setState({ contact: updatedContects });
-        this.localStorageService.setContactList(updatedContects);
+        // Edit logic
+        let updatedContacts = [...state.contact];
+        let index = updatedContacts.findIndex((contactData) => contactData.id === payload.id);
+        if(index >=0 && index < updatedContacts.length) updatedContacts[index] = payload; 
+        
+        setState({ contact: updatedContacts });
+        this.localStorageService.setContactList(updatedContacts);
     }
 
     @Action(removeContact)
@@ -140,9 +134,11 @@ export class contactState {
         { id }: removeContact
     ) {
         const state = getState();
-        const updatedContacts = state.contact.filter(
-            (contactData) => contactData.id !== id
-        );
+         // Remove logic
+        let updatedContacts = [...state.contact];
+        let index = updatedContacts.findIndex((contactData) => contactData.id === id);
+        updatedContacts =  [...updatedContacts.slice(0, index), ...updatedContacts.slice(index + 1)];
+        
         setState({ contact: updatedContacts });
         this.localStorageService.setContactList(updatedContacts);
     }

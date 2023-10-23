@@ -106,9 +106,11 @@ export class userState {
         if (available) {
             throw new Error('Email id is already in Used.');
         } else {
-            const updatedUsers = state.user.map((userData) =>
-                userData.id === payload.id ? payload : userData
-            );
+            // Edit logic
+            let updatedUsers = [...state.user];
+            let index = updatedUsers.findIndex((updatedUsers) => updatedUsers.id === payload.id);
+            if (index >= 0 && index < updatedUsers.length) updatedUsers[index] = payload;
+
             setState({ user: updatedUsers });
             this.localStorageService.setUserList(updatedUsers);
         }
